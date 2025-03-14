@@ -64,23 +64,14 @@ object P1_100325 {
     println(s" Ejemplo 4: ${subsets(Set(1, 2, 3))}")
 
     //Comprobación Ejercicio 10
-    println("Ejercicio 10")
+    println("Ejercicio 10: combinaciones de paréntesis")
+    println(s" Ejemplo: ${generateParentheses(3)}")
   }
 
   /*
   EJERCICIO 1
   Escribe una función recursiva de cola primeFactors(n: Int): List[Int] que devuelva una
   lista con los factores primos de un entero positivo dado n.
-  */
-
-  /*
-  REVISAR EN CASA (NO SALE DEL BUCLE)
-  def primeFactors(n:Int) : List[Int] =
-    def bucle(n:Int, divisor:Int, divisores:List[Int]): List[Int] =
-      if (n == 0) divisores //fin
-      else if (n % divisor == 0) bucle(n/divisor, divisor, divisores :+ divisor) //es divisible
-      else bucle(n, divisor + 1, divisores) //no es divisible
-    bucle(n, 2, List())
   */
 
   def primeFactors(n:Int) :List[Int] =
@@ -109,19 +100,6 @@ object P1_100325 {
         }
     binarySearchAux(arr, elt, 0, arr.length)
 
-  /*
-    REVISAR: ALGO ESTÁ MAL
-
-    def binarySearch(arr: Array[Int], elt: Int) : Option[Int] =
-    def bucle(left: Int, right: Int, ele: Int) : Option[Int] =
-      if (left > right) None //si hemos pasado el límite izquierdo con el derecho -> no está (caso base)
-      else
-        val mid = left + (right-left)/2 //mitad del array
-        if (mid == ele) Some(mid) //encontrado
-        else if (mid < ele) bucle(mid+1, right, ele) //mitad derecha
-        else bucle(left, mid-1, ele) //mitad izquierda
-    bucle(0, arr.length, elt)
-  */
 
   /*
   EJERCICIO 3
@@ -142,7 +120,7 @@ object P1_100325 {
   def unzipGen[A, B](lst: List[(A, B)]): (List[A], List[B]) =
     def bucle[A,B](lista: List[(A, B)], c1: List[A], c2: List[B]): (List[A], List[B]) =
       lista.match {
-        case Nil => (c1, c2)
+        case Nil => (c1.reverse, c2.reverse)
         //cogemos la primera tupla de la lista -> el resto lo guardamos en tail y lo usamos para la llamada recursiva
         case (a, b) :: tail => bucle(tail, a :: c1, b :: c2)
       }
@@ -257,7 +235,16 @@ object P1_100325 {
   • Utiliza un acumulador para almacenar secuencias válidas.
   • Haz un seguimiento del número de paréntesis de apertura (open) y cierre (closed) utilizados.
   • Caso base: Cuando open == closed == n, agrega la secuencia al resultado.
-
-  def generateParentheses(n:Int) : List[String] =
   */
+  def generateParentheses(n: Int): List[String] =
+    def bucle(open: Int, close: Int, current: String, acc: List[String]): List[String] =
+      if (open == 0 && close == 0) current :: acc //si hay igual nu¡úmero de "(" que ")" entonces es una combinación válida
+      else
+        val addOpen = if (open > 0) bucle(open - 1, close, current + "(", acc) else acc
+        //añadimos una apertura si siguen quedando aperturas por poner (hasta n)
+        val addClose = if (close > open) bucle(open, close - 1, current + ")", addOpen) else addOpen
+        //añadimos un cierre en caso de que haya más que apertura (el resto de casos "(")
+        addClose
+    bucle(n, n, "", List())
+
 }
