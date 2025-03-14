@@ -1,60 +1,67 @@
 import scala.annotation.tailrec
+import scala.collection.immutable.{AbstractSet, SortedSet}
 
 object P1_100325 {
   def main(args: Array[String]): Unit = {
     println("Práctica 1: Temas 1 y 2 (Introducción a Scala)")
 
     //Comprobación Ejercicio 1
-    println("Ejercicio 1")
+    println("Ejercicio 1: Divisores de un número")
     println(s" Ejemplo 1 (Divisores de 60):  ${primeFactors(60)}")
     println(s" Ejemplo 2 (Divisores de 97):  ${primeFactors(97)}")
     println(s" Ejemplo 3 (Divisores de 84):  ${primeFactors(84)}")
 
     //Comprobación Ejercicio 2
-    println("Ejercicio 2")
+    println("Ejercicio 2: Búsqueda de un elemento en un array")
     val arr = Array(1,3,5,7,9,11)
     println(s" Array para ejemplos: ${arr.mkString(",")}")
     println(s" Ejemplo 1 (Búsqueda binaria 5):  ${binarySearch(arr, 5)}")
     println(s" Ejemplo 2 (Búsqueda binaria de 10):  ${binarySearch(arr, 10)}")
 
     //Comprobación Ejercicio 3
-    println("Ejercicio 3")
+    println("Ejercicio 3: Unzip")
     val lista = List((10, 'a'), (20, 'b'), (30, 'c'))
     println(s" Lista para ejemplos: ${lista}")
     println(s" Ejemplo 1 (Unzip (int, char):  ${unzip(lista)}")
 
     //Comprobación Generalización Ejercicio 3
-    println("Ejercicio Generalización Ejercicio 3")
+    println("Ejercicio Generalización Ejercicio 3: Unzip genérico")
     println(s" Ejemplo 1(Unzip:  ${unzipGen(lista)}")
 
     //Comprobación Ejercicio 4
-    println("Ejercicio 4")
+    println("Ejercicio 4: Agrupación de dos listas")
     val l1 = List(10,20,30)
     val l2 = List('a','b','c')
     println(s" Listas para ejemplos: l1 = ${l1}, l2 = ${l2} ")
     println(s" Ejemplo 1(zip: ${zip(l1,l2)}")
 
     //Comprobación Ejercicio 5
-    println("Ejercicio 5")
+    println("Ejercicio 5: Filtrar una lista")
     val lista2 = List(1,2,3,4,5)
     println(s" Lista para ejemplos: ${lista2}")
     println(s" Ejemplo 1(filtro pares): ${filter(lista2, _%2==0)}")
 
     //Comprobación Ejercicio 6
-    println("Ejercicio 6")
+    println("Ejercicio 6: Mapa con condición")
     println(s" Lista para ejemplos: ${lista2}")
     println(s" Ejemplo 1(map pares): ${map(lista2, _*2)}")
 
     //Comprobación Ejercicio 7
-    println("Ejercicio 7")
+    println("Ejercicio 7: Agrupación según una condición")
     println(s" Lista para ejemplos: ${lista2}")
     println(s" Ejemplo (agrupación pares): ${groupBy(lista2, _ % 2 == 0)}")
 
     //Comprobación Ejercicio 8
-    println("Ejercicio 8")
+    println("Ejercicio 8: Reducir una lista con una operación")
+    println(s" Lista para ejemplos: ${lista2}")
+    println(s" Ejemplo (suma de elementos de un array): ${reduce(List(1,2,3,4,5), _ + _)}")
 
     //Comprobación Ejercicio 9
-    println("Ejercicio 9")
+    println("Ejercicio 9: subgrupos de un Set")
+    println(s" Ejemplo 1: ${subsets(Set())}")
+    println(s" Ejemplo 2: ${subsets(Set(1))}")
+    println(s" Ejemplo 3: ${subsets(Set(1,2))}")
+    println(s" Ejemplo 4: ${subsets(Set(1, 2, 3))}")
 
     //Comprobación Ejercicio 10
     println("Ejercicio 10")
@@ -225,16 +232,22 @@ object P1_100325 {
       case Nil => throw new UnsupportedOperationException("La lista está vacía")
       case head::tail => tail.foldLeft(head)(f)
     }
- /*
+
   /*
   EJERCICIO 9
   Implementa una función recursiva para generar todos los subconjuntos de un conjunto
   determinado. Conviértela en recursiva de cola.
   */
-  def subSet[A](s: Set[A]) : Set[Set[A]] =
+  def subsets[A](s: Set[A]) : Set[Set[A]] =
+    def bucle[A](remaining: Set[A], acc: Set[Set[A]]): Set[Set[A]] =
+      if (remaining.isEmpty) acc
+      else
+        val elem = remaining.head
+        bucle(remaining.tail, acc ++ acc.map(_ + elem))
+        //acc.map(_+elem) = coge todos los elementos de acc y crea nuevos subconjuntos con elem
+        //acc ++ acc.map(_+elem) = une los subconjuntos nuevos con los que ya estaban en acc
+    bucle(s, Set(Set()))
 
-
-  */
   /*
   EJERCICIO 10
   Escribe una función recursiva de cola generateParentheses(n: Int): List[String] que
