@@ -47,6 +47,8 @@ object P1_100325 {
 
     //Comprobación Ejercicio 7
     println("Ejercicio 7")
+    println(s" Lista para ejemplos: ${lista2}")
+    println(s" Ejemplo (agrupación pares): ${groupBy(lista2, _ % 2 == 0)}")
 
     //Comprobación Ejercicio 8
     println("Ejercicio 8")
@@ -232,6 +234,7 @@ object P1_100325 {
   def subSet[A](s: Set[A]) : Set[Set[A]] =
 
 
+  */
   /*
   EJERCICIO 10
   Escribe una función recursiva de cola generateParentheses(n: Int): List[String] que
@@ -241,7 +244,7 @@ object P1_100325 {
   • Utiliza un acumulador para almacenar secuencias válidas.
   • Haz un seguimiento del número de paréntesis de apertura (open) y cierre (closed) utilizados.
   • Caso base: Cuando open == closed == n, agrega la secuencia al resultado.
-  */
+
   def generateParentheses(n:Int) : List[String] =
-*/
+  */
 }
