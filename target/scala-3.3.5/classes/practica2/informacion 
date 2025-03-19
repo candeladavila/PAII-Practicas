@@ -1,0 +1,19 @@
+Versión 1: una lista mutable (array)
+ENQUEUE: buffer.append(elem)
+DEQUEUE: Som(buffer.remove(0))
+
+Versión 2: solo con listas (una sola lista inmutable)
+    Tenemos que crear versiones nuevas de la lista para añadir o eliminar elementos de la lista
+    Cuando llamemos a queue tenemos que crear una nueva lista que en su constructor le pasemos la nueva lista
+ENQUEUE: SimpleQueue(elem++List(elem))
+DEQUEUE: (elems.head, SimpleQueue(elems.tail))
+
+Versión 3: implementación de una cola con dos listas 
+l1: front -> elementos que extraemos (se convierte l2 en inverso y es lo que se usa) (l2 se queda vacía)
+l2: rear (elementos que voy insertando)
+ENQUEUE: EfficientQueue(front, elem::rear) 
+DEQUEUE: 
+    si hay elementos en front (se añaden los elementos rear al final)
+        h::t => (h, EfficientQueue(t, rear))
+    si no hay elementos en front
+        EfficientQueue(rear.reverse, Nil).dequeue()

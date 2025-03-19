@@ -1,5 +1,4 @@
-import scala.annotation.tailrec
-import scala.collection.immutable.{AbstractSet, SortedSet}
+package practica1
 
 object P1_100325 {
   def main(args: Array[String]): Unit = {
@@ -74,12 +73,14 @@ object P1_100325 {
   lista con los factores primos de un entero positivo dado n.
   */
 
-  def primeFactors(n:Int) :List[Int] =
-    def primeFactorsAux(n:Int, i:Int):List[Int] =
-      if (i * i > n) List(n)
-      else if (n% i == 0) i :: primeFactorsAux(n/i, i)
-      else primeFactorsAux (n, i+1)
-    primeFactorsAux(n, 2)
+  def primeFactors(n: Int): List[Int] =
+    def factorize(n: Int, divisor: Int, acc: List[Int]): List[Int] =
+      if (n < 2)
+        acc
+      else if (n % divisor == 0)
+        factorize(n / divisor, divisor, acc :+ divisor)
+      else factorize(n, divisor + 1, acc)
+    factorize(n, 2, List())
 
   /*
   EJERCICIO 2
