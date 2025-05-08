@@ -17,43 +17,54 @@ class Coche(C: Int) extends Thread {
 
   VARIABLES:
     - numPas = número de pasajeros
-    - mutex = semáforo sobre la variable
-    - hayPlazas = semáforo para permitir el acceso o no a nuevos pasajeros (se cierra cuando numPas == C)
-    - viajeEnCurso = semáforo que controla si hay o no un viaje iniciado o no
+    - hayHueco = semáforo para permitir el acceso o no a nuevos pasajeros (se cierra cuando numPas == C)
+    - viajeTerminado = semáforo que controla si hay o no un viaje iniciado o no
     - estaLleno = semáforo que controla si está lleno o no el coche de la montaña rusa
 
    MÉTODOS:
     - nuevoPaseo
       Para que haya un nuevo paseo el coche tiene que estar lleno -> desbloqueamos el semáforo lleno
+      Para desbloquear el coche hace viajeTerminado.acquire (se libera en el método FinViaje)
+    - esperaLleno -> se desbloquea cuando está lleno para imprimir el viaje
+    - finViaje -> manda el mensaje y después desbloquea a un pasajero                                                                          
 
    */
   private var numPas = 0
-  private val mutex = new Semaphore(1) //inicialmente, nadie está accediendo a la variable numPas
-  private val lleno = new Semaphore(0) //Al principio del coche no está lleno
-  private val viajeEnCurso = new Semaphore(1)
+  private val hayHueco = new Semaphore(1) // inicialmente está vacío el coche
+  private val estaLleno = new Semaphore(0)
+  private val empiezaViaje = new Semaphore(0)
+  private val viajeTerminado = new Semaphore(0)
 
   def nuevoPaseo(id: Int) = {
     // el pasajero id quiere dar un paseo en la montaña rusa
-    mutex.acquire()
-    numPas +=1
+    hayHueco.acquire()
+    numPas += 1
     log(s"El pasajero $id se sube al coche. Hay $numPas pasajeros.")
+    if (numPas < C)
+      hayHueco.release() //no se ha llenado el coche
     if (numPas == C)
-      lleno.release() //está lleno, desbloqueamos el coche
-    mutex.release()
+      estaLleno.release()
+
+    //CUANDO TERMINA EL VIAJE
+    viajeTerminado.acquire() //es liberado por el metodo finViaje
+    numPas -=1
     log(s"El pasajero $id se baja del coche. Hay $numPas pasajeros.")
+    if (numPas > 0) //quedan más pasajeros
+      viajeTerminado.release() //para liberar a los demás pasajeros
+    if (numPas == 0) //si no quedan pasajeros -> vuelve a liberar el coche para que puedan entrar nuevos pasajeros
+      hayHueco.release()
   }
 
   def esperaLleno = {
     // el coche espera a que se llene para dar un paseo
-    lleno.acquire()
-    viajeEnCurso.release()
+    estaLleno.acquire()
     log(s"        Coche lleno!!! empieza el viaje....")
   }
 
   def finViaje = {
     // el coche indica que se ha terminado el viaje
     log(s"        Fin del viaje... :-(")
-      //Liberamos a tantos pasajeros como plazas
+    viajeTerminado.release()
   }
 
   override def run = {
