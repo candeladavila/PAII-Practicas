@@ -26,7 +26,7 @@ class Coche(C: Int) extends Thread {
       Para que haya un nuevo paseo el coche tiene que estar lleno -> desbloqueamos el semáforo lleno
       Para desbloquear el coche hace viajeTerminado.acquire (se libera en el método FinViaje)
     - esperaLleno -> se desbloquea cuando está lleno para imprimir el viaje
-    - finViaje -> manda el mensaje y después desbloquea a un pasajero                                                                          
+    - finViaje -> manda el mensaje y después desbloquea a un pasajero
 
    */
   private var numPas = 0
@@ -37,7 +37,7 @@ class Coche(C: Int) extends Thread {
 
   def nuevoPaseo(id: Int) = {
     // el pasajero id quiere dar un paseo en la montaña rusa
-    hayHueco.acquire()
+    hayHueco.acquire() //PUERTA ENTRADA
     numPas += 1
     log(s"El pasajero $id se sube al coche. Hay $numPas pasajeros.")
     if (numPas < C)
@@ -88,3 +88,32 @@ object Ejercicio4 {
           coche.nuevoPaseo(i)
       }
 }
+
+/*
+
+puertaEntrada.acquire()
+mutex.acquire()
+numpas +=1
+log(el pasajero sube al coche)
+if (numPas < C) puertaEntrada.release()
+else lleno.release()
+mutex.relase()
+puertaSalida.acquire()
+mutex.acquire()
+numPas -=1
+log(el pasajero se baja del coche)
+if (numPas >0) puertaSalida.release()
+else puertaEntrada.release()
+mutex.release
+
+
+lleno.acquire()
+log(Coche lleno, empieza el viaje)
+
+log(fin del viaje)
+puertaSalida.release()
+
+
+
+SE PUEDE USAR EL MUTEX CON LA PUERTAENTRADA
+*/

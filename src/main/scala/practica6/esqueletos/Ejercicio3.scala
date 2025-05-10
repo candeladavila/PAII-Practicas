@@ -50,6 +50,7 @@ object aseo{
   val limpieza = new Semaphore(1) //Semáforo para evitar que entren dos equipos de limpieza a la vez
 
   def entraCliente(id:Int)={
+    /*
     limpieza.acquire()
     mutex.acquire()
     numClientes += 1
@@ -58,8 +59,15 @@ object aseo{
       puerta.acquire()
     limpieza.release()
     mutex.release()
+    */
+    mutex.acquire()
+    numClientes += 1
+    if (numClientes == 1) limpieza.acquire()
+    log(s"Entra cliente $id. Hay $numClientes clientes.")
+    mutex.release()
   }
   def saleCliente(id:Int)={
+    /*
     limpieza.acquire()
     mutex.acquire()
     numClientes -= 1
@@ -68,20 +76,34 @@ object aseo{
       puerta.release()
     limpieza.release()
     mutex.release()
+     */
+    mutex.acquire()
+    numClientes -= 1
+    log(s"Sale cliente $id. Hay $numClientes clientes.")
+    if (numClientes == 0) limpieza.release
+    mutex.release
   }
   def entraEquipoLimpieza ={
+    /*
     puerta.acquire()
     limpieza.acquire()
     mutex.acquire()
     log(s"        Entra el equipo de limpieza.")
     mutex.release()
+     */
+    limpieza.acquire
+    log(s"        Entra el equipo de limpieza.")
   }
   def saleEquipoLimpieza = {
+    /*
     mutex.acquire()
     log(s"        Sale el equipo de limpieza.")
     puerta.release()
     limpieza.release()
     mutex.release()
+     */
+    log(s"        Sale el equipo de limpieza.")
+    limpieza.release()
   }
 }
 
