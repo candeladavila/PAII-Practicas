@@ -22,14 +22,14 @@ object gestorAgua {
     nOxigeno += 1
     if (nHidrogeno + nOxigeno < 3) {
       mutex.release()
-      molecula.acquire()
+      molecula.acquire() //se bloquea hasta que se haga la molecula
       mutex.acquire()
     } else {
       log(s"      Molécula formada!!!")
     }
     nOxigeno -= 1
-    if (nHidrogeno + nOxigeno > 0) molecula.release()
-    else {
+    if (nHidrogeno + nOxigeno > 0) molecula.release() //siguen quedando elementos bloqueados -> libero en cascada
+    else { //abrimos las puertas para que puedan volver a entrar
       puertaOx.release()
       puertaHid.release()
     }

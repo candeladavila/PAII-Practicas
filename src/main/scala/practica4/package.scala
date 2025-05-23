@@ -1,32 +1,33 @@
-package object practica4 {
-  def thread(body: => Unit): Thread = {
-    val t = new Thread {
-      override def run(): Unit = { body }
+package object ejercicios {
+
+  def thread(body: =>Unit):Thread={
+    val t = new Thread{
+      override def run = body
     }
-    t.start()
+    t.start
     t
   }
 
-  //EJERCICIO 3
-  /* 
-  Queremos que cada hebra se encargue de comprobar la mitad del array
-   */
-  def paralleel[A,B](a: =>A, b: => B):(A,B) =
-    var va = null.asInstanceOf[A] //Iniciar una variable de un tipo abstracto a null
-    var vb = null.asInstanceOf[B]
-    val ha = thread{
-      va = a
-    }
-    val hb = thread {
-      vb = b
-    }
-    ha.join()
-    hb.join()
-    (va, vb)
+  def log(msg:String) =
+    println(s"${Thread.currentThread().getName}: $msg")
 
-  def log(str: String) = {
-    println(s"${Thread.currentThread().getName}:$str")
+  //Ejercicio 2a
+  def periodico(t:Long)(b: =>Unit):Thread =
+    thread{
+      while (true)
+        b
+        Thread.sleep(t)
+    }
+  //Ejercicio 3a
+  def parallel[A,B](a: =>A,b: =>B):(A,B) = {
+    var va:A=null.asInstanceOf[A]
+    var vb:B=null.asInstanceOf[B]
+    val hA = thread{va = a}
+    val hB = thread{vb = b}
+    hA.join()
+    hB.join()
+    (va,vb)
   }
 
-}
 
+}

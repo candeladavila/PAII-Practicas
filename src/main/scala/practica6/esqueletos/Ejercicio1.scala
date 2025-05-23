@@ -32,7 +32,7 @@ object mediciones {
     log(s"Sensor $id almacena su medición" )
     if (mediciones == 3) esperaTrab.release() //si han terminado todos los sensores -> bloqueo
     mutex.release()
-    esperaSensor(id).acquire()
+    esperaSensor(id).acquire() //bloqueamos el sensor para que no pueda entrar
   }
 
   def leerMediciones() = {

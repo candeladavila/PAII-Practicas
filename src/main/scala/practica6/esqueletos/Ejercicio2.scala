@@ -48,7 +48,7 @@ class Cadena(n: Int) {
     log(s"Empaquetador $p retira un producto. Quedan ${tipo.mkString("[",",","]")}")
     if (tipo(p) > 0) esperaEmp(p).release() //Cuando el colocador coloca un producto si sigue habiendo productos de ese tipo hay que hacer un release
       //me aviso a mí mismo de que puedo seguir cogiendo paquetes, quedan de ese tipo
-    if (tipo.sum == n-1) esperaCol.release() //desbloquea al colocador
+    if (tipo.sum == n-1) esperaCol.release() //desbloquea al colocador porque queda un sitio
     mutex.release()
   }
   def nuevoProducto(p:Int) = { //p es el tipo

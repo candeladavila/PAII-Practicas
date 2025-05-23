@@ -62,7 +62,7 @@ object aseo{
     */
     mutex.acquire()
     numClientes += 1
-    if (numClientes == 1) limpieza.acquire()
+    if (numClientes == 1) limpieza.acquire() //es el primero en entrar y bloquea a la limpieza
     log(s"Entra cliente $id. Hay $numClientes clientes.")
     mutex.release()
   }
@@ -80,7 +80,7 @@ object aseo{
     mutex.acquire()
     numClientes -= 1
     log(s"Sale cliente $id. Hay $numClientes clientes.")
-    if (numClientes == 0) limpieza.release
+    if (numClientes == 0) limpieza.release //es el último en salir y libera a la limpieza
     mutex.release
   }
   def entraEquipoLimpieza ={

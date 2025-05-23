@@ -44,8 +44,7 @@ class Nido(B: Int) {
       log(s"Mamá pone un bichito. Quedan $plato bichitos")
     }
     if (plato < B) hayEspacio.release()
-    if (plato == 1) hayBichitos.release()
-    //solo cuando pongo el primer bichito en el plato vacío desbloqueo a un bebe
+    if (plato == 1) hayBichitos.release() //solo cuando pongo el primer bichito en el plato vacío desbloqueo a un bebe
     mutex.release()
   }
 }
