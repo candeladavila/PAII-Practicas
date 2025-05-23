@@ -2,6 +2,25 @@ package esqueletosLaboratorio7
 
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
+/*
+  Ejemplo:
+  imaginamos que tenemos un total de 5 recursos
+    - p0 = pide 4 recursos (se los doy y me queda 1)
+    - p1 = pide 3 recursos (se espera a que haya recursos libres)
+    - p2 = pide 1 recursos (aunque hay recursos para él tiene que esperar la cola)
+
+  La idea es que hay asignar los recursos en el mismo orden en el que se han pedido (First Come First Served)
+
+  VARIABLES:
+    -
+  MÉTODOS:
+    - pidoRecursos =>
+    - libRecursos =>
+  NOTAS:
+    - La repartición de recursos se hace en orden de solicitud
+    - CS-1 = Un proceso se espera cuando alguien ha pedido recursos antes que él y no ha sido atendido (no se llegan a mirar siquiera si hay recursos)
+    - CS-2 = Un proceso se tiene que esperar en su turno si no hay suficientes recursos en el sistema para él
+*/
 
 class Recursos(rec:Int) {
 
